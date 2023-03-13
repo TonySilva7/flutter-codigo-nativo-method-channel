@@ -5,11 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "debug_local",
+      "name": "local-ios",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
       "deviceId": "757865D9-E04C-4E4B-B88D-91941F7B187B"
+    },
+    {
+      "name": "local-android",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "deviceId": "emulator-5554"
     },
     {
       "name": "code_nativo (profile mode)",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,12 +32,19 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _a = 0;
   int _b = 0;
-  int sum = 0;
+  int _sum = 0;
 
-  void sumValues() {
-    setState(() {
-      sum = _a + _b;
-    });
+  Future<void> _sumValues() async {
+    const channel = MethodChannel("com.tony/nativo");
+    try {
+      final sum = await channel.invokeMethod("sumValues", {"a": _a, "b": _b});
+
+      setState(() {
+        _sum = sum;
+      });
+    } on PlatformException catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -52,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "O resultado da soma é: $sum",
+                  "O resultado da soma é: $_sum",
                   style: const TextStyle(fontSize: 20),
                 ),
                 TextField(
@@ -64,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   onChanged: (value) => setState(() => _b = int.tryParse(value) ?? 0),
                 ),
                 ElevatedButton(
-                  onPressed: sumValues,
+                  onPressed: _sumValues,
                   child: const Text("Somar"),
                 ),
               ],
